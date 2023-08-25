@@ -22,9 +22,9 @@ class _NewsApiService implements NewsApiService {
 
   @override
   Future<HttpResponse<List<ArticleModel>>> getArticles({
-    String? country,
-    String? category,
-    String? apiKey,
+    required String country,
+    required String category,
+    required String apiKey,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -32,7 +32,6 @@ class _NewsApiService implements NewsApiService {
       r'category': category,
       r'apiKey': apiKey,
     };
-    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<List<dynamic>>(
