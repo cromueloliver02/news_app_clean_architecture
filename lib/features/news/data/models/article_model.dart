@@ -1,7 +1,6 @@
-import 'dart:convert';
-
 import 'package:news_app_clean_architecture/features/news/domain/entities/entities.dart';
 
+// TODO: implement freezed
 class ArticleModel extends Article {
   const ArticleModel({
     required super.id,
@@ -14,7 +13,7 @@ class ArticleModel extends Article {
     required super.content,
   });
 
-  factory ArticleModel.fromMap(Map<String, dynamic> map) {
+  factory ArticleModel.fromJson(Map<String, dynamic> map) {
     return ArticleModel(
       id: map['id'] ?? '',
       author: map['author'] ?? '',
@@ -26,7 +25,4 @@ class ArticleModel extends Article {
       content: map['content'] ?? '',
     );
   }
-
-  factory ArticleModel.fromJson(String source) =>
-      ArticleModel.fromMap(jsonDecode(source));
 }
