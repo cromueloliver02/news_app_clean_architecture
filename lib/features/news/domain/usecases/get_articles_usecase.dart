@@ -5,11 +5,11 @@ import 'package:news_app_clean_architecture/core/usecases/usecase.dart';
 import 'package:news_app_clean_architecture/features/news/domain/entities/entities.dart';
 import 'package:news_app_clean_architecture/features/news/domain/repository/repository.dart';
 
-class GetArticleUseCase
+class GetArticlesUseCase
     implements UseCase<Either<Failure, List<Article>>, void> {
   final ArticleRepository _articleRepository;
 
-  GetArticleUseCase({required ArticleRepository articleRepository})
+  GetArticlesUseCase({required ArticleRepository articleRepository})
       : _articleRepository = articleRepository;
 
   @override
