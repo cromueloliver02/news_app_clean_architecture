@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:news_app_clean_architecture/config/theme/app_theme.dart';
+import 'package:news_app_clean_architecture/features/news/presentation/bloc/bloc.dart';
+import 'package:news_app_clean_architecture/features/news/presentation/pages/pages.dart';
+import 'package:news_app_clean_architecture/injection_container.dart';
 
 class NewsApp extends StatelessWidget {
   const NewsApp({super.key});
@@ -7,14 +13,11 @@ class NewsApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'News App',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const Scaffold(
-        body: Center(
-          child: Text('NEWS APP'),
-        ),
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.theme,
+      home: BlocProvider<RemoteArticlesBloc>(
+        create: (ctx) => sl<RemoteArticlesBloc>(),
+        child: const HomePage(),
       ),
     );
   }

@@ -10,8 +10,9 @@ part 'news_api_service.g.dart';
 abstract class NewsApiService {
   factory NewsApiService(Dio dio) = _NewsApiService;
 
+  // TODO: try to remove HttpResponse
   @GET('/top-headlines')
-  Future<HttpResponse<List<ArticleModel>>> getArticles({
+  Future<HttpResponse<ArticlesResponse>> getArticles({
     @Query('country') required String country,
     @Query('category') required String category,
     @Query('apiKey') required String apiKey,

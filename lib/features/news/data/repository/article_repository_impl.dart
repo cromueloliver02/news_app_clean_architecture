@@ -20,7 +20,9 @@ class ArticleRepositoryImpl implements ArticleRepository {
   @override
   Future<Either<Failure, List<ArticleModel>>> getArticles() async {
     try {
-      final HttpResponse httpResponse = await _newsApiService.getArticles(
+      // TODO: throw exception if NEWS_API_KEY is null
+      final HttpResponse<ArticlesResponse> httpResponse =
+          await _newsApiService.getArticles(
         country: kCountryQuery,
         category: kCategoryQuery,
         apiKey: dotenv.env['NEWS_API_KEY'] ?? '',
@@ -34,7 +36,7 @@ class ArticleRepositoryImpl implements ArticleRepository {
         ));
       }
 
-      return Right(httpResponse.response.data);
+      return Right(httpResponse.data.articles);
     } catch (err) {
       return Left(UnexpectedFailure(exception: err));
     }
