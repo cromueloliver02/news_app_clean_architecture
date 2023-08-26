@@ -21,7 +21,7 @@ class _NewsApiService implements NewsApiService {
   String? baseUrl;
 
   @override
-  Future<HttpResponse<InvalidType>> getArticles({
+  Future<HttpResponse<ArticlesResponse>> getArticles({
     required String country,
     required String category,
     required String apiKey,
@@ -35,7 +35,7 @@ class _NewsApiService implements NewsApiService {
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<HttpResponse<InvalidType>>(Options(
+        _setStreamType<HttpResponse<ArticlesResponse>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -51,7 +51,7 @@ class _NewsApiService implements NewsApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = InvalidType.fromJson(_result.data!);
+    final value = ArticlesResponse.fromJson(_result.data!);
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;
   }

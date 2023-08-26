@@ -1,10 +1,13 @@
 import 'package:news_app_clean_architecture/features/news/data/models/models.dart';
 
-// TODO: add more properties
 class ArticlesResponse {
+  final String status;
+  final int totalResults;
   final List<ArticleModel> articles;
 
   const ArticlesResponse({
+    required this.status,
+    required this.totalResults,
     required this.articles,
   });
 
@@ -13,6 +16,10 @@ class ArticlesResponse {
       map['articles']?.map((d) => ArticleModel.fromJson(d)),
     );
 
-    return ArticlesResponse(articles: articles);
+    return ArticlesResponse(
+      status: map['status'] ?? '',
+      totalResults: map['totalResults']?.toInt() ?? 0,
+      articles: articles,
+    );
   }
 }
