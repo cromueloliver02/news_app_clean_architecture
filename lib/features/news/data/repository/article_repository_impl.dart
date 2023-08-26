@@ -20,12 +20,19 @@ class ArticleRepositoryImpl implements ArticleRepository {
   @override
   Future<Either<Failure, List<ArticleModel>>> getArticles() async {
     try {
-      // TODO: throw exception if NEWS_API_KEY is null
+      final String? apiKey = dotenv.env['NEWS_API_KEY'];
+
+      if (apiKey == null) {
+        throw Exception(
+          'Provide your own .env file and store your API key in NEWS_API_KEY',
+        );
+      }
+
       final HttpResponse<ArticlesResponse> httpResponse =
           await _newsApiService.getArticles(
         country: kCountryQuery,
         category: kCategoryQuery,
-        apiKey: dotenv.env['NEWS_API_KEY'] ?? '',
+        apiKey: apiKey,
       );
 
       if (httpResponse.response.statusCode != HttpStatus.ok) {
