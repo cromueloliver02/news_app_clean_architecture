@@ -1,6 +1,5 @@
 import 'package:news_app_clean_architecture/features/news/domain/entities/entities.dart';
 
-// TODO: implement freezed
 class ArticleModel extends Article {
   const ArticleModel({
     required super.id,
