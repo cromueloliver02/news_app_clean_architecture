@@ -8,8 +8,9 @@ import 'package:news_app_clean_architecture/features/news/domain/repository/repo
 class RemoveArticleUseCase implements UseCase<void, Article> {
   final ArticleRepository _articleRepository;
 
-  RemoveArticleUseCase({required ArticleRepository articleRepository})
-      : _articleRepository = articleRepository;
+  const RemoveArticleUseCase({
+    required ArticleRepository articleRepository,
+  }) : _articleRepository = articleRepository;
 
   @override
   Future<Either<Failure, void>> call(Article params) {

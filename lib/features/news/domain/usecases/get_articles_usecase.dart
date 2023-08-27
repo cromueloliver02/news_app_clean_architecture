@@ -9,8 +9,9 @@ class GetArticlesUseCase
     implements UseCase<Either<Failure, List<Article>>, void> {
   final ArticleRepository _articleRepository;
 
-  GetArticlesUseCase({required ArticleRepository articleRepository})
-      : _articleRepository = articleRepository;
+  const GetArticlesUseCase({
+    required ArticleRepository articleRepository,
+  }) : _articleRepository = articleRepository;
 
   @override
   Future<Either<Failure, List<Article>>> call(void params) {
