@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:news_app_clean_architecture/features/news/data/datasources/datasources.dart';
+import 'package:news_app_clean_architecture/features/news/data/datasources/local/app_database.dart';
 import 'package:news_app_clean_architecture/features/news/data/repository/repository.dart';
 import 'package:news_app_clean_architecture/features/news/domain/repository/repository.dart';
 import 'package:news_app_clean_architecture/features/news/domain/usecases/usecases.dart';
@@ -11,6 +12,11 @@ final GetIt sl = GetIt.instance;
 
 void setup() {
   // external dependencies
+  sl.registerSingletonAsync<AppDatabase>(() async {
+    final AppDatabase database =
+        await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+    return database;
+  });
   sl.registerSingleton<Dio>(Dio());
 
   // data sources

@@ -1,6 +1,9 @@
+import 'package:floor/floor.dart';
+
 import 'package:news_app_clean_architecture/core/constants/constants.dart';
 import 'package:news_app_clean_architecture/features/news/domain/entities/entities.dart';
 
+@Entity(tableName: 'tblArticles', primaryKeys: ['id'])
 class ArticleModel extends Article {
   const ArticleModel({
     required super.id,
