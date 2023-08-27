@@ -40,6 +40,9 @@ void setup() {
   sl.registerSingleton<SaveArticleUseCase>(
     SaveArticleUseCase(articleRepository: sl<ArticleRepository>()),
   );
+  sl.registerSingleton<RemoveArticleUseCase>(
+    RemoveArticleUseCase(articleRepository: sl<ArticleRepository>()),
+  );
 
   // blocs
   sl.registerFactory<ArticlesBloc>(
