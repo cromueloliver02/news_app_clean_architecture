@@ -24,8 +24,8 @@ class NewsApp extends StatelessWidget {
           title: 'News App',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.theme,
-          home: BlocProvider<ArticlesBloc>(
-            create: (ctx) => sl<ArticlesBloc>(),
+          home: BlocProvider<RemoteArticlesBloc>(
+            create: (ctx) => sl<RemoteArticlesBloc>(),
             child: const HomePage(),
           ),
         );

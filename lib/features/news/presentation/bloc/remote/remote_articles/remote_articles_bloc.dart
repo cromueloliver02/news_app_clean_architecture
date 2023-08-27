@@ -7,21 +7,25 @@ import 'package:news_app_clean_architecture/core/failures/failures.dart';
 import 'package:news_app_clean_architecture/features/news/domain/entities/entities.dart';
 import 'package:news_app_clean_architecture/features/news/domain/usecases/usecases.dart';
 
-part 'articles_event.dart';
-part 'articles_state.dart';
+part 'remote_articles_event.dart';
+part 'remote_articles_state.dart';
 
-class ArticlesBloc extends Bloc<ArticlesEvent, ArticlesState> {
+class RemoteArticlesBloc
+    extends Bloc<RemoteArticlesEvent, RemoteArticlesState> {
   final GetArticlesUseCase _getArticlesUseCase;
 
-  ArticlesBloc(this._getArticlesUseCase) : super(ArticlesLoading()) {
-    on<ArticlesLoaded>(_onArticlesLoaded);
+  RemoteArticlesBloc({
+    required GetArticlesUseCase getArticlesUseCase,
+  })  : _getArticlesUseCase = getArticlesUseCase,
+        super(RemoteArticlesLoading()) {
+    on<RemoteArticlesLoaded>(_onArticlesLoaded);
   }
 
   void _onArticlesLoaded(
-    ArticlesLoaded event,
-    Emitter<ArticlesState> emit,
+    RemoteArticlesLoaded event,
+    Emitter<RemoteArticlesState> emit,
   ) async {
-    emit(ArticlesLoading());
+    emit(RemoteArticlesLoading());
 
     final Either<Failure, List<Article>> either =
         await _getArticlesUseCase(null);
@@ -29,9 +33,11 @@ class ArticlesBloc extends Bloc<ArticlesEvent, ArticlesState> {
     either.fold(
       (Failure error) {
         if (kDebugMode) debugPrint(error.toString());
-        emit(ArticlesFailure(error: error));
+        emit(RemoteArticlesFailure(error: error));
       },
-      (List<Article> articles) => emit(ArticlesSuccess(articles: articles)),
+      (List<Article> articles) => emit(
+        RemoteArticlesSuccess(articles: articles),
+      ),
     );
   }
 }

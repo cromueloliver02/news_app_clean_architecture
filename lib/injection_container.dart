@@ -50,8 +50,8 @@ void setup() {
   );
 
   // blocs
-  sl.registerFactory<ArticlesBloc>(
-    () => ArticlesBloc(sl<GetArticlesUseCase>()),
+  sl.registerFactory<RemoteArticlesBloc>(
+    () => RemoteArticlesBloc(getArticlesUseCase: sl<GetArticlesUseCase>()),
   );
   sl.registerFactory<LocalArticlesBloc>(
     () => LocalArticlesBloc(

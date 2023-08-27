@@ -14,11 +14,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Widget _articlesBuilder(BuildContext ctx, ArticlesState state) {
+  Widget _articlesBuilder(BuildContext ctx, RemoteArticlesState state) {
     return switch (state) {
-      ArticlesLoading() => const Center(child: CupertinoActivityIndicator()),
-      ArticlesFailure() => const Center(child: Icon(Icons.refresh)),
-      ArticlesSuccess() => ListView.builder(
+      RemoteArticlesLoading() =>
+        const Center(child: CupertinoActivityIndicator()),
+      RemoteArticlesFailure() => const Center(child: Icon(Icons.refresh)),
+      RemoteArticlesSuccess() => ListView.builder(
           itemCount: state.articles.length,
           itemBuilder: (ctx, idx) => ArticleTile(
             article: state.articles[idx],
@@ -38,13 +39,14 @@ class _HomePageState extends State<HomePage> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: BlocBuilder<ArticlesBloc, ArticlesState>(builder: _articlesBuilder),
+      body: BlocBuilder<RemoteArticlesBloc, RemoteArticlesState>(
+          builder: _articlesBuilder),
     );
   }
 
   @override
   void initState() {
     super.initState();
-    context.read<ArticlesBloc>().add(ArticlesLoaded());
+    context.read<RemoteArticlesBloc>().add(RemoteArticlesLoaded());
   }
 }
