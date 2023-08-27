@@ -24,7 +24,10 @@ void setup() {
 
   // repositories
   sl.registerSingleton<ArticleRepository>(
-    ArticleRepositoryImpl(newsApiService: sl<NewsApiService>()),
+    ArticleRepositoryImpl(
+      newsApiService: sl<NewsApiService>(),
+      appDatabase: sl<AppDatabase>(),
+    ),
   );
 
   // use cases

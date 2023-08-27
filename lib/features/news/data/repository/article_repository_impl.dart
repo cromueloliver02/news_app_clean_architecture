@@ -7,15 +7,20 @@ import 'package:retrofit/retrofit.dart';
 import 'package:news_app_clean_architecture/core/constants/constants.dart';
 import 'package:news_app_clean_architecture/core/failures/failures.dart';
 import 'package:news_app_clean_architecture/features/news/data/datasources/datasources.dart';
+import 'package:news_app_clean_architecture/features/news/data/datasources/local/app_database.dart';
 import 'package:news_app_clean_architecture/features/news/data/models/models.dart';
+import 'package:news_app_clean_architecture/features/news/domain/entities/entities.dart';
 import 'package:news_app_clean_architecture/features/news/domain/repository/repository.dart';
 
 class ArticleRepositoryImpl implements ArticleRepository {
   final NewsApiService _newsApiService;
+  final AppDatabase _appDatabase;
 
   ArticleRepositoryImpl({
     required NewsApiService newsApiService,
-  }) : _newsApiService = newsApiService;
+    required AppDatabase appDatabase,
+  })  : _newsApiService = newsApiService,
+        _appDatabase = appDatabase;
 
   @override
   Future<Either<Failure, List<ArticleModel>>> getArticles() async {
@@ -44,6 +49,42 @@ class ArticleRepositoryImpl implements ArticleRepository {
       }
 
       return Right(httpResponse.data.articles);
+    } catch (err) {
+      return Left(UnexpectedFailure(exception: err));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Article>>> getSavedArticles() async {
+    try {
+      final List<ArticleModel> articles =
+          await _appDatabase.articleDao.getArticles();
+
+      return Right(articles);
+    } catch (err) {
+      return Left(UnexpectedFailure(exception: err));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> removeArticle(Article article) async {
+    try {
+      await _appDatabase.articleDao
+          .deleteArticle(ArticleModel.fromEntity(article));
+
+      return const Right(null);
+    } catch (err) {
+      return Left(UnexpectedFailure(exception: err));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> saveArticle(Article article) async {
+    try {
+      await _appDatabase.articleDao
+          .insertArticle(ArticleModel.fromEntity(article));
+
+      return const Right(null);
     } catch (err) {
       return Left(UnexpectedFailure(exception: err));
     }
