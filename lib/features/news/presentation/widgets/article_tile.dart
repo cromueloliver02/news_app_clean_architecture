@@ -40,7 +40,7 @@ class ArticleTile extends StatelessWidget {
             Expanded(
               child: ArticleTileContent(
                 title: article.title,
-                description: article.description ?? 'No description',
+                description: article.description ?? '',
                 publishedAt: article.publishedAt,
               ),
             ),
