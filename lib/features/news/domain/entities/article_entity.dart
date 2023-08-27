@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class Article extends Equatable {
-  final int? id;
+  final String id;
   final String author;
   final String title;
   final String? description;
@@ -41,7 +41,7 @@ class Article extends Equatable {
   }
 
   Article copyWith({
-    int Function()? id,
+    String Function()? id,
     String Function()? author,
     String Function()? title,
     String? Function()? description,

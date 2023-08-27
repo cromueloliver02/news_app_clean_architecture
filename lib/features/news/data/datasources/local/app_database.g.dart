@@ -85,7 +85,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `tblArticles` (`id` INTEGER, `author` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT, `url` TEXT NOT NULL, `imageUrl` TEXT NOT NULL, `publishedAt` TEXT NOT NULL, `content` TEXT, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `tblArticles` (`id` TEXT NOT NULL, `author` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT, `url` TEXT NOT NULL, `imageUrl` TEXT NOT NULL, `publishedAt` TEXT NOT NULL, `content` TEXT, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -146,7 +146,7 @@ class _$ArticleDao extends ArticleDao {
   Future<List<ArticleModel>> getArticles() async {
     return _queryAdapter.queryList('SELECT * FROM tblArticles',
         mapper: (Map<String, Object?> row) => ArticleModel(
-            id: row['id'] as int?,
+            id: row['id'] as String,
             author: row['author'] as String,
             title: row['title'] as String,
             description: row['description'] as String?,

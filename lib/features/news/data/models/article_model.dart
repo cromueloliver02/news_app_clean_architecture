@@ -18,7 +18,7 @@ class ArticleModel extends Article {
 
   factory ArticleModel.fromJson(Map<String, dynamic> map) {
     return ArticleModel(
-      id: map['id']?.toInt() ?? 0,
+      id: map['id'] ?? '',
       author: map['author'] ?? '',
       title: map['title'] ?? '',
       description: map['description'],
