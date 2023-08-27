@@ -1,4 +1,5 @@
 import 'package:floor/floor.dart';
+import 'package:uuid/uuid.dart';
 
 import 'package:news_app_clean_architecture/core/constants/constants.dart';
 import 'package:news_app_clean_architecture/features/news/domain/entities/entities.dart';
@@ -17,8 +18,10 @@ class ArticleModel extends Article {
   });
 
   factory ArticleModel.fromJson(Map<String, dynamic> map) {
+    const Uuid uuid = Uuid();
+
     return ArticleModel(
-      id: map['id'] ?? '',
+      id: uuid.v4(),
       author: map['author'] ?? '',
       title: map['title'] ?? '',
       description: map['description'],
