@@ -8,3 +8,25 @@ sealed class LocalArticlesEvent extends Equatable {
 }
 
 final class LocalArticlesLoaded extends LocalArticlesEvent {}
+
+final class LocalArticlesSaved extends LocalArticlesEvent {
+  final Article article;
+
+  const LocalArticlesSaved({
+    required this.article,
+  });
+
+  @override
+  List<Object> get props => [article];
+}
+
+final class LocalArticlesRemoved extends LocalArticlesEvent {
+  final Article article;
+
+  const LocalArticlesRemoved({
+    required this.article,
+  });
+
+  @override
+  List<Object> get props => [article];
+}

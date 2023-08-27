@@ -11,6 +11,10 @@ final class LocalArticlesInitial extends LocalArticlesState {}
 
 final class LocalArticlesLoading extends LocalArticlesState {}
 
+final class LocalArticlesSaving extends LocalArticlesState {}
+
+final class LocalArticlesRemoving extends LocalArticlesState {}
+
 final class LocalArticlesSuccess extends LocalArticlesState {
   final List<Article> articles;
 
