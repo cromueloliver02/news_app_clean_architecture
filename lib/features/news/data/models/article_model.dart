@@ -2,7 +2,6 @@ import 'package:news_app_clean_architecture/features/news/domain/entities/entiti
 
 class ArticleModel extends Article {
   const ArticleModel({
-    required super.id,
     required super.author,
     required super.title,
     required super.description,
@@ -14,14 +13,13 @@ class ArticleModel extends Article {
 
   factory ArticleModel.fromJson(Map<String, dynamic> map) {
     return ArticleModel(
-      id: map['id'] ?? '',
       author: map['author'] ?? '',
       title: map['title'] ?? '',
-      description: map['description'] ?? '',
+      description: map['description'],
       url: map['url'] ?? '',
-      imageUrl: map['urlToImage'] ?? '',
+      imageUrl: map['urlToImage'],
       publishedAt: map['publishedAt'] ?? '',
-      content: map['content'] ?? '',
+      content: map['content'],
     );
   }
 }

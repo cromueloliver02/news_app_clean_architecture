@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'package:news_app_clean_architecture/core/constants/constants.dart';
 import 'package:news_app_clean_architecture/features/news/domain/entities/entities.dart';
 import 'package:news_app_clean_architecture/features/news/presentation/widgets/widgets.dart';
 
@@ -33,11 +34,13 @@ class ArticleTile extends StatelessWidget {
         ),
         child: Row(
           children: [
-            ArticleTileImage(imageUrl: article.imageUrl),
+            ArticleTileImage(
+              imageUrl: article.imageUrl ?? kNewsTileImagePlaceholder,
+            ),
             Expanded(
               child: ArticleTileContent(
                 title: article.title,
-                description: article.description,
+                description: article.description ?? 'No description',
                 publishedAt: article.publishedAt,
               ),
             ),
