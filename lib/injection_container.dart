@@ -12,36 +12,41 @@ final GetIt sl = GetIt.instance;
 
 void setup() {
   // external dependencies
+  sl.registerSingleton<Dio>(Dio());
   sl.registerSingletonAsync<AppDatabase>(() async {
     final AppDatabase database =
         await $FloorAppDatabase.databaseBuilder('app_database.db').build();
     return database;
   });
-  sl.registerSingleton<Dio>(Dio());
 
   // data sources
   sl.registerSingleton<NewsApiService>(NewsApiService(sl<Dio>()));
 
   // repositories
-  sl.registerSingleton<ArticleRepository>(
-    ArticleRepositoryImpl(
+  sl.registerSingletonWithDependencies<ArticleRepository>(
+    () => ArticleRepositoryImpl(
       newsApiService: sl<NewsApiService>(),
       appDatabase: sl<AppDatabase>(),
     ),
+    dependsOn: [AppDatabase],
   );
 
   // use cases
-  sl.registerSingleton<GetArticlesUseCase>(
-    GetArticlesUseCase(articleRepository: sl<ArticleRepository>()),
+  sl.registerSingletonWithDependencies<GetArticlesUseCase>(
+    () => GetArticlesUseCase(articleRepository: sl<ArticleRepository>()),
+    dependsOn: [ArticleRepository],
   );
-  sl.registerSingleton<GetSavedArticlesUseCase>(
-    GetSavedArticlesUseCase(articleRepository: sl<ArticleRepository>()),
+  sl.registerSingletonWithDependencies<GetSavedArticlesUseCase>(
+    () => GetSavedArticlesUseCase(articleRepository: sl<ArticleRepository>()),
+    dependsOn: [ArticleRepository],
   );
-  sl.registerSingleton<SaveArticleUseCase>(
-    SaveArticleUseCase(articleRepository: sl<ArticleRepository>()),
+  sl.registerSingletonWithDependencies<SaveArticleUseCase>(
+    () => SaveArticleUseCase(articleRepository: sl<ArticleRepository>()),
+    dependsOn: [ArticleRepository],
   );
-  sl.registerSingleton<RemoveArticleUseCase>(
-    RemoveArticleUseCase(articleRepository: sl<ArticleRepository>()),
+  sl.registerSingletonWithDependencies<RemoveArticleUseCase>(
+    () => RemoveArticleUseCase(articleRepository: sl<ArticleRepository>()),
+    dependsOn: [ArticleRepository],
   );
 
   // blocs

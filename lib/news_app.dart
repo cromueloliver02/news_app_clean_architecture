@@ -11,14 +11,25 @@ class NewsApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'News App',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.theme,
-      home: BlocProvider<ArticlesBloc>(
-        create: (ctx) => sl<ArticlesBloc>(),
-        child: const HomePage(),
-      ),
+    return FutureBuilder(
+      future: sl.allReady(),
+      builder: (ctx, snapshot) {
+        if (!snapshot.hasData) {
+          return const MaterialApp(
+            home: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        return MaterialApp(
+          title: 'News App',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.theme,
+          home: BlocProvider<ArticlesBloc>(
+            create: (ctx) => sl<ArticlesBloc>(),
+            child: const HomePage(),
+          ),
+        );
+      },
     );
   }
 }
