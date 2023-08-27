@@ -14,6 +14,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Widget _articlesBuilder(BuildContext ctx, ArticlesState state) {
+    return switch (state) {
+      ArticlesLoading() => const Center(child: CupertinoActivityIndicator()),
+      ArticlesFailure() => const Center(child: Icon(Icons.refresh)),
+      ArticlesSuccess() => ListView.builder(
+          itemCount: state.articles.length,
+          itemBuilder: (ctx, idx) => ArticleTile(
+            article: state.articles[idx],
+            onArticlePressed: (Article article) {},
+            onRemove: (Article article) {},
+          ),
+        ),
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,28 +38,7 @@ class _HomePageState extends State<HomePage> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: BlocBuilder<ArticlesBloc, ArticlesState>(
-        builder: (ctx, state) {
-          if (state is ArticlesLoading) {
-            return const Center(child: CupertinoActivityIndicator());
-          }
-
-          if (state is ArticlesFailure) {
-            return const Center(child: Icon(Icons.refresh));
-          }
-
-          state = state as ArticlesSuccess;
-
-          return ListView.builder(
-            itemCount: state.articles.length,
-            itemBuilder: (ctx, idx) => ArticleTile(
-              article: (state as ArticlesSuccess).articles[idx],
-              onArticlePressed: (Article article) {},
-              onRemove: (Article article) {},
-            ),
-          );
-        },
-      ),
+      body: BlocBuilder<ArticlesBloc, ArticlesState>(builder: _articlesBuilder),
     );
   }
 
