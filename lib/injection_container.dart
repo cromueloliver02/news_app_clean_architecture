@@ -37,6 +37,9 @@ void setup() {
   sl.registerSingleton<GetSavedArticlesUseCase>(
     GetSavedArticlesUseCase(articleRepository: sl<ArticleRepository>()),
   );
+  sl.registerSingleton<SaveArticleUseCase>(
+    SaveArticleUseCase(articleRepository: sl<ArticleRepository>()),
+  );
 
   // blocs
   sl.registerFactory<ArticlesBloc>(
