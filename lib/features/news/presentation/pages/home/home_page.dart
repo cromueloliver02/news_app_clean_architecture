@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:news_app_clean_architecture/features/news/domain/entities/entities.dart';
 import 'package:news_app_clean_architecture/features/news/presentation/bloc/bloc.dart';
-import 'package:news_app_clean_architecture/features/news/presentation/widgets/article_tile.dart';
+import 'package:news_app_clean_architecture/features/news/presentation/widgets/widgets.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,22 +23,22 @@ class _HomePageState extends State<HomePage> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: BlocBuilder<RemoteArticlesBloc, RemoteArticlesState>(
+      body: BlocBuilder<ArticlesBloc, ArticlesState>(
         builder: (ctx, state) {
-          if (state is RemoteArticlesLoading) {
+          if (state is ArticlesLoading) {
             return const Center(child: CupertinoActivityIndicator());
           }
 
-          if (state is RemoteArticlesFailure) {
+          if (state is ArticlesFailure) {
             return const Center(child: Icon(Icons.refresh));
           }
 
-          state = state as RemoteArticlesSuccess;
+          state = state as ArticlesSuccess;
 
           return ListView.builder(
             itemCount: state.articles.length,
             itemBuilder: (ctx, idx) => ArticleTile(
-              article: (state as RemoteArticlesSuccess).articles[idx],
+              article: (state as ArticlesSuccess).articles[idx],
               onArticlePressed: (Article article) {},
               onRemove: (Article article) {},
             ),
@@ -51,6 +51,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    context.read<RemoteArticlesBloc>().add(ArticlesFetched());
+    context.read<ArticlesBloc>().add(ArticlesLoaded());
   }
 }

@@ -27,7 +27,7 @@ void setup() {
   );
 
   // blocs
-  sl.registerFactory<RemoteArticlesBloc>(
-    () => RemoteArticlesBloc(sl<GetArticlesUseCase>()),
+  sl.registerFactory<ArticlesBloc>(
+    () => ArticlesBloc(sl<GetArticlesUseCase>()),
   );
 }
