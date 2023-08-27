@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
 
@@ -26,7 +27,10 @@ class ArticlesBloc extends Bloc<ArticlesEvent, ArticlesState> {
         await _getArticlesUseCase(null);
 
     either.fold(
-      (Failure error) => emit(ArticlesFailure(error: error)),
+      (Failure error) {
+        if (kDebugMode) debugPrint(error.toString());
+        emit(ArticlesFailure(error: error));
+      },
       (List<Article> articles) => emit(ArticlesSuccess(articles: articles)),
     );
   }
