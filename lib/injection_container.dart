@@ -53,4 +53,9 @@ void setup() {
   sl.registerFactory<ArticlesBloc>(
     () => ArticlesBloc(sl<GetArticlesUseCase>()),
   );
+  sl.registerFactory<LocalArticlesBloc>(
+    () => LocalArticlesBloc(
+      getSavedArticlesUseCase: sl<GetSavedArticlesUseCase>(),
+    ),
+  );
 }
