@@ -13,7 +13,10 @@ class NewsApp extends StatelessWidget {
       builder: (ctx, snapshot) {
         if (!snapshot.hasData) {
           return const MaterialApp(
-            home: Center(child: CircularProgressIndicator()),
+            home: Scaffold(
+              backgroundColor: Colors.white,
+              body: Center(child: CircularProgressIndicator()),
+            ),
           );
         }
 
