@@ -41,6 +41,7 @@ dependencies:
    fpdart: ^1.1.0
    get_it: ^7.6.0
    intl: ^0.18.1
+   ionicons: ^0.2.2
    retrofit: ^4.0.1
    uuid: ^3.0.7
 
