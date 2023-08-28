@@ -17,15 +17,15 @@ class RemoteArticlesBloc
   RemoteArticlesBloc({
     required GetArticlesUseCase getArticlesUseCase,
   })  : _getArticlesUseCase = getArticlesUseCase,
-        super(RemoteArticlesLoading()) {
-    on<RemoteArticlesLoaded>(_onArticlesLoaded);
+        super(RemoteArticlesState.initial()) {
+    on<RemoteArticlesFetched>(_onArticlesFetched);
   }
 
-  void _onArticlesLoaded(
-    RemoteArticlesLoaded event,
+  void _onArticlesFetched(
+    RemoteArticlesFetched event,
     Emitter<RemoteArticlesState> emit,
   ) async {
-    emit(RemoteArticlesLoading());
+    emit(state.copyWith(status: () => RemoteArticlesStatus.loading));
 
     final Either<Failure, List<Article>> either =
         await _getArticlesUseCase(null);
@@ -33,11 +33,17 @@ class RemoteArticlesBloc
     either.fold(
       (Failure error) {
         if (kDebugMode) debugPrint(error.toString());
-        emit(RemoteArticlesFailure(error: error));
+        emit(state.copyWith(
+          error: () => error,
+          status: () => RemoteArticlesStatus.failure,
+        ));
       },
-      (List<Article> articles) => emit(
-        RemoteArticlesSuccess(articles: articles),
-      ),
+      (List<Article> articles) {
+        emit(state.copyWith(
+          articles: () => articles,
+          status: () => RemoteArticlesStatus.success,
+        ));
+      },
     );
   }
 }

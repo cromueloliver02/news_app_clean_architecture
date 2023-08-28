@@ -7,4 +7,4 @@ sealed class RemoteArticlesEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class RemoteArticlesLoaded extends RemoteArticlesEvent {}
+final class RemoteArticlesFetched extends RemoteArticlesEvent {}

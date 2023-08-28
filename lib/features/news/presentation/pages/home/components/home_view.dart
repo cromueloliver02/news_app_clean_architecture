@@ -9,31 +9,38 @@ import 'package:news_app_clean_architecture/features/news/presentation/pages/hom
 import 'package:news_app_clean_architecture/features/news/presentation/pages/pages.dart';
 import 'package:news_app_clean_architecture/features/news/presentation/widgets/widgets.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
-  @override
-  State<HomeView> createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> {
-  void _onArticlePressed(Article article) {
-    context.goNamed(ArticlePage.name, extra: article);
+  void _onArticlePressed(BuildContext ctx, {required Article article}) {
+    ctx.goNamed(ArticlePage.name, extra: article);
   }
 
   Widget _articlesBuilder(BuildContext ctx, RemoteArticlesState state) {
-    return switch (state) {
-      RemoteArticlesLoading() =>
-        const Center(child: CupertinoActivityIndicator()),
-      RemoteArticlesFailure() => const Center(child: Icon(Icons.refresh)),
-      RemoteArticlesSuccess() => ListView.builder(
-          itemCount: state.articles.length,
-          itemBuilder: (ctx, idx) => ArticleTile(
-            article: state.articles[idx],
-            onArticlePressed: _onArticlePressed,
-          ),
-        ),
-    };
+    final List<RemoteArticlesStatus> initialStatuses = [
+      RemoteArticlesStatus.initial,
+      RemoteArticlesStatus.loading
+    ];
+
+    if (initialStatuses.contains(state.status)) {
+      return const Center(child: CupertinoActivityIndicator());
+    }
+
+    if (state.status == RemoteArticlesStatus.loading) {
+      return const Center(child: Icon(Icons.refresh));
+    }
+
+    if (state.articles.isEmpty) {
+      return const Center(child: Text('No saved news to show'));
+    }
+
+    return ListView.builder(
+      itemCount: state.articles.length,
+      itemBuilder: (ctx, idx) => ArticleTile(
+        article: state.articles[idx],
+        onArticlePressed: (article) => _onArticlePressed(ctx, article: article),
+      ),
+    );
   }
 
   @override
@@ -47,11 +54,5 @@ class _HomeViewState extends State<HomeView> {
         builder: _articlesBuilder,
       ),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    context.read<RemoteArticlesBloc>().add(RemoteArticlesLoaded());
   }
 }
