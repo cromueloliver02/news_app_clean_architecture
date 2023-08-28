@@ -6,7 +6,7 @@ import 'package:news_app_clean_architecture/features/news/domain/entities/entiti
 import 'package:news_app_clean_architecture/features/news/domain/repository/repository.dart';
 
 class GetSavedArticlesUseCase
-    implements UseCase<Either<Failure, List<Article>>, void> {
+    implements UseCase<Either<Failure, List<Article>>, NoParams> {
   final ArticleRepository _articleRepository;
 
   const GetSavedArticlesUseCase({
@@ -14,7 +14,7 @@ class GetSavedArticlesUseCase
   }) : _articleRepository = articleRepository;
 
   @override
-  Future<Either<Failure, List<Article>>> call(void params) {
+  Future<Either<Failure, List<Article>>> call(NoParams params) {
     return _articleRepository.getSavedArticles();
   }
 }

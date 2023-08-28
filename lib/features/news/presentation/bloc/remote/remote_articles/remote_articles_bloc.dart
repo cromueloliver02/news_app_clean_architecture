@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
 
 import 'package:news_app_clean_architecture/core/failures/failures.dart';
+import 'package:news_app_clean_architecture/core/usecases/usecase.dart';
 import 'package:news_app_clean_architecture/features/news/domain/entities/entities.dart';
 import 'package:news_app_clean_architecture/features/news/domain/usecases/usecases.dart';
 
@@ -28,7 +29,7 @@ class RemoteArticlesBloc
     emit(state.copyWith(status: () => RemoteArticlesStatus.loading));
 
     final Either<Failure, List<Article>> either =
-        await _getArticlesUseCase(null);
+        await _getArticlesUseCase(NoParams());
 
     either.fold(
       (Failure error) {

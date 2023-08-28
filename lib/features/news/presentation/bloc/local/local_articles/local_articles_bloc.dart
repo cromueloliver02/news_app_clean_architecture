@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
 
 import 'package:news_app_clean_architecture/core/failures/failures.dart';
+import 'package:news_app_clean_architecture/core/usecases/usecase.dart';
 import 'package:news_app_clean_architecture/features/news/domain/entities/entities.dart';
 import 'package:news_app_clean_architecture/features/news/domain/usecases/usecases.dart';
 
@@ -38,7 +39,7 @@ class LocalArticlesBloc extends Bloc<LocalArticlesEvent, LocalArticlesState> {
     ));
 
     final Either<Failure, List<Article>> either =
-        await _getSavedArticlesUseCase(null);
+        await _getSavedArticlesUseCase(NoParams());
 
     either.fold(
       (Failure error) {
