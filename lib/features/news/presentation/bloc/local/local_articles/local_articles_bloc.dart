@@ -22,17 +22,20 @@ class LocalArticlesBloc extends Bloc<LocalArticlesEvent, LocalArticlesState> {
   })  : _getSavedArticlesUseCase = getSavedArticlesUseCase,
         _saveArticleUseCase = saveArticleUseCase,
         _removeArticleUseCase = removeArticleUseCase,
-        super(LocalArticlesInitial()) {
-    on<LocalArticlesLoaded>(_onLocalArticlesLoaded);
+        super(LocalArticlesState.initial()) {
+    on<LocalArticlesFetched>(_onLocalArticlesFetched);
     on<LocalArticlesSaved>(_onLocalArticlesSaved);
     on<LocalArticlesRemoved>(_onLocalArticlesRemoved);
   }
 
-  void _onLocalArticlesLoaded(
-    LocalArticlesLoaded event,
+  void _onLocalArticlesFetched(
+    LocalArticlesFetched event,
     Emitter<LocalArticlesState> emit,
   ) async {
-    emit(LocalArticlesLoading());
+    emit(state.copyWith(
+      actionType: () => LocalArticlesActionType.fetching,
+      status: () => LocalArticlesStatus.loading,
+    ));
 
     final Either<Failure, List<Article>> either =
         await _getSavedArticlesUseCase(null);
@@ -40,10 +43,16 @@ class LocalArticlesBloc extends Bloc<LocalArticlesEvent, LocalArticlesState> {
     either.fold(
       (Failure error) {
         if (kDebugMode) debugPrint(error.toString());
-        emit(LocalArticlesFailure(error: error));
+        emit(state.copyWith(
+          error: () => error,
+          status: () => LocalArticlesStatus.failure,
+        ));
       },
       (List<Article> articles) {
-        emit(LocalArticlesSuccess(articles: articles));
+        emit(state.copyWith(
+          articles: () => articles,
+          status: () => LocalArticlesStatus.success,
+        ));
       },
     );
   }
@@ -52,7 +61,10 @@ class LocalArticlesBloc extends Bloc<LocalArticlesEvent, LocalArticlesState> {
     LocalArticlesSaved event,
     Emitter<LocalArticlesState> emit,
   ) async {
-    emit(LocalArticlesSaving());
+    emit(state.copyWith(
+      actionType: () => LocalArticlesActionType.saving,
+      status: () => LocalArticlesStatus.loading,
+    ));
 
     final Either<Failure, void> either =
         await _saveArticleUseCase(event.article);
@@ -60,16 +72,18 @@ class LocalArticlesBloc extends Bloc<LocalArticlesEvent, LocalArticlesState> {
     either.fold(
       (Failure error) {
         if (kDebugMode) debugPrint(error.toString());
-        emit(LocalArticlesFailure(error: error));
+        emit(state.copyWith(
+          error: () => error,
+          status: () => LocalArticlesStatus.failure,
+        ));
       },
       (_) {
-        if (state is! LocalArticlesSuccess) return;
+        final List<Article> articles = [...state.articles, event.article];
 
-        final List<Article> articles = [
-          ...(state as LocalArticlesSuccess).articles,
-          event.article,
-        ];
-        emit(LocalArticlesSuccess(articles: articles));
+        emit(state.copyWith(
+          articles: () => articles,
+          status: () => LocalArticlesStatus.success,
+        ));
       },
     );
   }
@@ -78,7 +92,10 @@ class LocalArticlesBloc extends Bloc<LocalArticlesEvent, LocalArticlesState> {
     LocalArticlesRemoved event,
     Emitter<LocalArticlesState> emit,
   ) async {
-    emit(LocalArticlesRemoving());
+    emit(state.copyWith(
+      actionType: () => LocalArticlesActionType.removing,
+      status: () => LocalArticlesStatus.loading,
+    ));
 
     final Either<Failure, void> either =
         await _removeArticleUseCase(event.article);
@@ -86,17 +103,19 @@ class LocalArticlesBloc extends Bloc<LocalArticlesEvent, LocalArticlesState> {
     either.fold(
       (Failure error) {
         if (kDebugMode) debugPrint(error.toString());
-        emit(LocalArticlesFailure(error: error));
+        emit(state.copyWith(
+          error: () => error,
+          status: () => LocalArticlesStatus.failure,
+        ));
       },
       (_) {
-        if (state is! LocalArticlesSuccess) return;
+        final List<Article> articles =
+            state.articles.where((d) => d.id != event.article.id).toList();
 
-        final List<Article> articles = (state as LocalArticlesSuccess)
-            .articles
-            .where((d) => d.id != event.article.id)
-            .toList();
-
-        emit(LocalArticlesSuccess(articles: articles));
+        emit(state.copyWith(
+          articles: () => articles,
+          status: () => LocalArticlesStatus.success,
+        ));
       },
     );
   }

@@ -9,38 +9,39 @@ import 'package:news_app_clean_architecture/features/news/presentation/pages/pag
 import 'package:news_app_clean_architecture/features/news/presentation/pages/saved_articles/components/saved_articles_app_bar.dart';
 import 'package:news_app_clean_architecture/features/news/presentation/widgets/widgets.dart';
 
-class SavedArticlesView extends StatefulWidget {
+class SavedArticlesView extends StatelessWidget {
   const SavedArticlesView({super.key});
 
-  @override
-  State<SavedArticlesView> createState() => _SavedArticlesViewState();
-}
+  void _onArticlePressed(BuildContext ctx, {required Article article}) {
+    ctx.pushNamed(ArticlePage.name, extra: article);
+  }
 
-class _SavedArticlesViewState extends State<SavedArticlesView> {
-  void _onArticlePressed(Article article) {
-    context.pushNamed(ArticlePage.name, extra: article);
+  void _onRemove(BuildContext ctx, {required Article article}) {
+    ctx.read<LocalArticlesBloc>().add(LocalArticlesRemoved(article: article));
   }
 
   Widget _articlesBuilder(BuildContext ctx, LocalArticlesState state) {
-    if (state is LocalArticlesLoading) {
+    final List<LocalArticlesStatus> initialStatuses = [
+      LocalArticlesStatus.initial,
+      LocalArticlesStatus.loading
+    ];
+
+    if (initialStatuses.contains(state.status)) {
       return const Center(child: CupertinoActivityIndicator());
     }
 
-    if (state is LocalArticlesFailure) {
+    if (state.status == LocalArticlesStatus.failure) {
       return const Center(child: Icon(Icons.refresh));
     }
 
-    if (state is LocalArticlesSuccess) {
-      return ListView.builder(
-        itemCount: state.articles.length,
-        itemBuilder: (ctx, idx) => ArticleTile(
-          article: state.articles[idx],
-          onArticlePressed: _onArticlePressed,
-        ),
-      );
-    }
-
-    return const SizedBox.shrink();
+    return ListView.builder(
+      itemCount: state.articles.length,
+      itemBuilder: (ctx, idx) => ArticleTile(
+        article: state.articles[idx],
+        onArticlePressed: (article) => _onArticlePressed(ctx, article: article),
+        onRemove: (article) => _onRemove(ctx, article: article),
+      ),
+    );
   }
 
   @override
@@ -54,11 +55,5 @@ class _SavedArticlesViewState extends State<SavedArticlesView> {
         builder: _articlesBuilder,
       ),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    context.read<LocalArticlesBloc>().add(LocalArticlesLoaded());
   }
 }

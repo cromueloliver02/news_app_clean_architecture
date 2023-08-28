@@ -28,6 +28,6 @@ class _SavedArticlesPageState extends State<SavedArticlesPage> {
   @override
   void initState() {
     super.initState();
-    context.read<LocalArticlesBloc>().add(LocalArticlesLoaded());
+    context.read<LocalArticlesBloc>().add(LocalArticlesFetched());
   }
 }

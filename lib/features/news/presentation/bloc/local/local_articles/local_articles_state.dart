@@ -1,38 +1,50 @@
 part of 'local_articles_bloc.dart';
 
-sealed class LocalArticlesState extends Equatable {
-  const LocalArticlesState();
+enum LocalArticlesActionType { fetching, saving, removing }
 
-  @override
-  List<Object> get props => [];
-}
+enum LocalArticlesStatus { initial, loading, success, failure }
 
-final class LocalArticlesInitial extends LocalArticlesState {}
-
-final class LocalArticlesLoading extends LocalArticlesState {}
-
-final class LocalArticlesSaving extends LocalArticlesState {}
-
-final class LocalArticlesRemoving extends LocalArticlesState {}
-
-final class LocalArticlesSuccess extends LocalArticlesState {
+class LocalArticlesState extends Equatable {
   final List<Article> articles;
-
-  const LocalArticlesSuccess({
-    required this.articles,
-  });
-
-  @override
-  List<Object> get props => [articles];
-}
-
-final class LocalArticlesFailure extends LocalArticlesState {
+  final LocalArticlesActionType actionType;
+  final LocalArticlesStatus status;
   final Failure error;
 
-  const LocalArticlesFailure({
+  const LocalArticlesState({
+    required this.articles,
+    required this.actionType,
+    required this.status,
     required this.error,
   });
 
+  factory LocalArticlesState.initial() {
+    return const LocalArticlesState(
+      articles: <Article>[],
+      actionType: LocalArticlesActionType.fetching,
+      status: LocalArticlesStatus.initial,
+      error: Failure(),
+    );
+  }
+
   @override
-  List<Object> get props => [error];
+  List<Object> get props => [articles, actionType, status, error];
+
+  @override
+  String toString() {
+    return 'LocalArticlesState(articles: $articles, actionType: $actionType, status: $status, error: $error)';
+  }
+
+  LocalArticlesState copyWith({
+    List<Article> Function()? articles,
+    LocalArticlesActionType Function()? actionType,
+    LocalArticlesStatus Function()? status,
+    Failure Function()? error,
+  }) {
+    return LocalArticlesState(
+      articles: articles != null ? articles() : this.articles,
+      actionType: actionType != null ? actionType() : this.actionType,
+      status: status != null ? status() : this.status,
+      error: error != null ? error() : this.error,
+    );
+  }
 }

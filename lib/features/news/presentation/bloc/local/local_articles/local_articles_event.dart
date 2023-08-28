@@ -7,7 +7,7 @@ sealed class LocalArticlesEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class LocalArticlesLoaded extends LocalArticlesEvent {}
+final class LocalArticlesFetched extends LocalArticlesEvent {}
 
 final class LocalArticlesSaved extends LocalArticlesEvent {
   final Article article;
