@@ -23,6 +23,14 @@ abstract class AppRoute {
               child: ArticlePage(article: state.extra as Article),
             ),
           ),
+          GoRoute(
+            name: SavedArticlesPage.name,
+            path: SavedArticlesPage.path,
+            builder: (ctx, state) => MultiBlocProvider(
+              providers: SavedArticlesPage.blocProviders,
+              child: const SavedArticlesPage(),
+            ),
+          ),
         ],
       ),
     ],
