@@ -1,3 +1,4 @@
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,7 +26,7 @@ class LocalArticlesBloc extends Bloc<LocalArticlesEvent, LocalArticlesState> {
         _removeArticleUseCase = removeArticleUseCase,
         super(LocalArticlesState.initial()) {
     on<LocalArticlesFetched>(_onLocalArticlesFetched);
-    on<LocalArticlesSaved>(_onLocalArticlesSaved);
+    on<LocalArticlesSaved>(_onLocalArticlesSaved, transformer: droppable());
     on<LocalArticlesRemoved>(_onLocalArticlesRemoved);
   }
 

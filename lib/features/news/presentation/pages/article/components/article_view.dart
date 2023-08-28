@@ -19,13 +19,6 @@ class ArticleView extends StatelessWidget {
 
   void _onFloatingActionButtonPressed(BuildContext ctx) {
     ctx.read<LocalArticlesBloc>().add(LocalArticlesSaved(article: article));
-
-    ScaffoldMessenger.of(ctx).showSnackBar(
-      const SnackBar(
-        backgroundColor: Colors.black,
-        content: Text('Article saved successfully.'),
-      ),
-    );
   }
 
   @override
