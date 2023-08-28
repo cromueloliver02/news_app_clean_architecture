@@ -26,7 +26,8 @@ class SavedArticlesView extends StatelessWidget {
       LocalArticlesStatus.loading
     ];
 
-    if (initialStatuses.contains(state.status)) {
+    if (initialStatuses.contains(state.status) &&
+        state.actionType == LocalArticlesActionType.fetching) {
       return const Center(child: CupertinoActivityIndicator());
     }
 
