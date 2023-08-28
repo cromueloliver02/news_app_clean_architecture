@@ -34,6 +34,10 @@ class SavedArticlesView extends StatelessWidget {
       return const Center(child: Icon(Icons.refresh));
     }
 
+    if (state.articles.isEmpty) {
+      return const Center(child: Text('No news to show'));
+    }
+
     return ListView.builder(
       itemCount: state.articles.length,
       itemBuilder: (ctx, idx) => ArticleTile(
