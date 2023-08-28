@@ -6,16 +6,14 @@ import 'package:news_app_clean_architecture/features/news/presentation/widgets/w
 
 class ArticleTile extends StatelessWidget {
   final Article article;
-  final bool isRemovable;
-  final void Function(Article article) onRemove;
   final void Function(Article article) onArticlePressed;
+  final void Function(Article article)? onRemove;
 
   const ArticleTile({
     super.key,
     required this.article,
     required this.onArticlePressed,
-    required this.onRemove,
-    this.isRemovable = false,
+    this.onRemove,
   });
 
   @override
@@ -43,7 +41,6 @@ class ArticleTile extends StatelessWidget {
             ),
             ArticleTileRemovableArea(
               article: article,
-              isRemovable: isRemovable,
               onRemove: onRemove,
             ),
           ],

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:news_app_clean_architecture/config/theme/app_theme.dart';
-import 'package:news_app_clean_architecture/features/news/presentation/bloc/bloc.dart';
-import 'package:news_app_clean_architecture/features/news/presentation/pages/pages.dart';
+import 'package:news_app_clean_architecture/config/config.dart';
 import 'package:news_app_clean_architecture/injection_container.dart';
 
 class NewsApp extends StatelessWidget {
@@ -20,14 +17,11 @@ class NewsApp extends StatelessWidget {
           );
         }
 
-        return MaterialApp(
+        return MaterialApp.router(
           title: 'News App',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.theme,
-          home: BlocProvider<RemoteArticlesBloc>(
-            create: (ctx) => sl<RemoteArticlesBloc>(),
-            child: const HomePage(),
-          ),
+          routerConfig: AppRoute.router,
         );
       },
     );
