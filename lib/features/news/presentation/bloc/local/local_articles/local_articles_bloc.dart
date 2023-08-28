@@ -63,6 +63,8 @@ class LocalArticlesBloc extends Bloc<LocalArticlesEvent, LocalArticlesState> {
         emit(LocalArticlesFailure(error: error));
       },
       (_) {
+        if (state is! LocalArticlesSuccess) return;
+
         final List<Article> articles = [
           ...(state as LocalArticlesSuccess).articles,
           event.article,
@@ -87,6 +89,8 @@ class LocalArticlesBloc extends Bloc<LocalArticlesEvent, LocalArticlesState> {
         emit(LocalArticlesFailure(error: error));
       },
       (_) {
+        if (state is! LocalArticlesSuccess) return;
+
         final List<Article> articles = (state as LocalArticlesSuccess)
             .articles
             .where((d) => d.id != event.article.id)
